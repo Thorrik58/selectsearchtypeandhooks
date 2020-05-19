@@ -26,7 +26,6 @@ const numberOfMatches = (user: UserProps, searchTerm: string): Number => {
 const filterList = (userList: UserProps[], searchTerm: string): UserProps[] => {
   console.log(userList);
   console.log(searchTerm);
-  const regex = new RegExp(`(${searchTerm})`, "gi");
   const newArr = userList.filter(
     (user) => numberOfMatches(user, searchTerm) > 0
   );
