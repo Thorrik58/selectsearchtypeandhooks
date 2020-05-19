@@ -21,6 +21,7 @@ const filterList = (userList: UserProps[], searchTerm: string): UserProps[] => {
   const newArr = userList.filter(
     (user) => numberOfMatches(user, searchTerm) > 0
   );
+  // Sort array so the most relevant user appears on top
   const sortedNewArr = newArr.sort((a, b) => {
     if (numberOfMatches(a, searchTerm) > numberOfMatches(b, searchTerm)) {
       return -1;
@@ -59,13 +60,12 @@ const createHighLightedText = (
 
 const Select: FC = () => {
   const [hasError, setErrors] = useState(false);
-  if (hasError) {
-    console.warn(`Error fetching user data ${hasError}`);
-  }
   const [users, setUsers] = useState<UserProps[]>();
   const [searchValue, setSearchValue] = useState("");
   const [activeUser, setActiveUser] = useState(0);
 
+  // Given more time I would like to handle the error if we cant fetch the user database by informing the user of a service error
+  // This obviously wont work on any other environment than localhost.
   useEffect(() => {
     let isCurrent = true;
     fetch("http://localhost:3001/users")
@@ -82,6 +82,10 @@ const Select: FC = () => {
       });
   }, []);
 
+  if (hasError) {
+    console.error(`Error fetching user data: ${hasError}`);
+  }
+
   const handleOnKeyDown = (keyCode: number) => {
     if (keyCode === 40) {
       setActiveUser(
@@ -96,7 +100,6 @@ const Select: FC = () => {
   };
 
   let filteredAndSortedArr: UserProps[] = [];
-  // make the user array sent in through props, fetch in app.tsx
   if (typeof users !== "undefined") {
     filteredAndSortedArr = filterList(users, searchValue);
   }
@@ -126,6 +129,7 @@ const Select: FC = () => {
               setActiveUser(0);
             }}
           />
+          {/* wcag */}
           <label className={styles.aux} htmlFor="search">
             Search for name:
           </label>

@@ -1,3 +1,10 @@
+$base-black: #474747;
+$base-white: #ffffff;
+$base-blue: #2823fb;
+$input-hover-grey: #f3f7ff;
+$grey-text-color: #98a4c5;
+$input-field-border: #d5e0ff;
+
 .select_container {
   display: flex;
   flex-direction: column;
@@ -14,8 +21,8 @@
   display: flex;
   flex-direction: column;
   list-style: none;
-  background: #ffffff;
-  color: black;
+  background: $base-white;
+  color: $base-black;
   padding: 10px;
   justify-content: space-between;
   font-size: 16px;
@@ -27,11 +34,11 @@
 
 .user_element {
   &:focus {
-    outline: red;
-    border: 1px solid #2823fb;
+    outline: none;
+    border: 1px solid $base-blue;
   }
   &.active_user {
-    background: #f3f7ff;
+    background: $input-hover-grey;
     border-radius: 4px;
   }
 }
@@ -41,28 +48,32 @@
   font-size: 16px;
   margin-bottom: 5px;
 }
+
 .sub_text {
   padding: 0 10px;
   margin-top: 0;
   font-size: 14px;
-  color: #98a4c5;
+  color: $grey-text-color;
 }
+
 .highlighted_text {
   font-weight: 700;
 }
+
 .no_results {
   font-style: italic;
   padding: 20px 0;
-  color: #98a4c5;
+  color: $grey-text-color;
 }
 
 .input_container {
   position: relative;
   &.focused_searchbar {
-    outline: 1px #2823fb;
+    outline: 1px $base-blue;
   }
 }
 
+// style used to hide label from user but making sure its present for wcag
 .aux {
   position: absolute;
   height: 1px;
@@ -71,16 +82,18 @@
   clip: rect(1px, 1px, 1px, 1px);
   white-space: nowrap;
 }
+
 .icon {
   position: absolute;
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
 }
+
 .input_field {
   border-radius: 4px;
   padding: 5px 5px 5px 40px;
-  color: #474747;
+  color: $base-black;
   font-size: 16px;
   border: 0;
   background: transparent;
@@ -89,18 +102,17 @@
   box-sizing: border-box;
   min-height: 56px;
   align-items: center;
-  background: #f3f7ff;
-  border: 1px solid #d5e0ff;
+  background: $input-hover-grey;
+  border: 1px solid $input-field-border;
   border-radius: 4px;
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 1px #2823fb;
-    // outline: 1px solid #2823fb;
+    box-shadow: 0 0 0 1px $base-blue;
     border-radius: 4px;
   }
 }
 
 .placeholder_text {
-  color: #98a4c5;
+  color: $grey-text-color;
 }
