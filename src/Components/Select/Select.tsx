@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./assets/select.module.scss";
+import cx from "classnames";
 
 interface SelectProps {
   /** userlist */
@@ -33,7 +34,7 @@ const getHighlightedText = (text: string, highlight: string): JSX.Element => {
           key={i}
           style={
             part.toLowerCase() === highlight.toLowerCase()
-              ? { fontWeight: 600 }
+              ? { fontWeight: 500 }
               : {}
           }
         >
@@ -48,6 +49,7 @@ const Select: React.FC<SelectProps> = () => {
   const [hasError, setErrors] = useState(false);
   const [users, setUsers] = useState<UserProps[]>();
   const [searchValue, setSearchValue] = useState("");
+  const [activeUser, setActiveUser] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -73,15 +75,28 @@ const Select: React.FC<SelectProps> = () => {
           <input
             type="text"
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+              setActiveUser(0);
+            }}
           />
         </label>
       </form>
       {typeof users !== "undefined" && searchValue.length > 0 && (
-        <ul>
+        <ul tabIndex={-1}>
           {filteredArr.length > 0 ? (
             filteredArr.map((user, key) => (
-              <li key={key} value={user.name}>
+              <li
+                key={key}
+                value={user.name}
+                onMouseOver={() => {
+                  setActiveUser(key);
+                }}
+                className={cx(
+                  styles.user_element,
+                  key === activeUser ? styles.active_user : null
+                )}
+              >
                 {getHighlightedText(user.name, searchValue)}
                 {getHighlightedText(user.email, searchValue)}
               </li>
