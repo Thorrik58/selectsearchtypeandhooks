@@ -90,11 +90,14 @@
   min-height: 56px;
   align-items: center;
   background: #f3f7ff;
+  border: 1px solid #d5e0ff;
   border-radius: 4px;
 
   &:focus {
-    outline: red;
-    border: 1px solid #2823fb;
+    outline: none;
+    box-shadow: 0 0 0 1px #2823fb;
+    // outline: 1px solid #2823fb;
+    border-radius: 4px;
   }
 }
 

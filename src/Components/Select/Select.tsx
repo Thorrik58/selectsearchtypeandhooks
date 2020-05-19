@@ -132,12 +132,11 @@ const Select: FC = () => {
         </div>
       </form>
       {typeof users !== "undefined" && searchValue.length > 0 && (
-        <ul className={styles.user_list} tabIndex={-1}>
+        <ul className={styles.user_list}>
           {filteredAndSortedArr.length > 0 ? (
             filteredAndSortedArr.map((user, key) => (
               <li
                 key={key}
-                tabIndex={0}
                 value={user.name}
                 onMouseOver={() => {
                   setActiveUser(key);
