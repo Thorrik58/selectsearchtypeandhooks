@@ -3,8 +3,35 @@
   flex-direction: column;
 }
 
-.user_element {
-  &.active_user {
-    background: red;
+.hidden_label {
+  display: none;
+}
+
+.user_list {
+  .user_element {
+    &.active_user {
+      background: red;
+    }
+  }
+}
+
+.searchbar {
+  display: flex;
+  min-width: 294px;
+  min-height: 36px;
+  padding: 10px;
+  align-items: center;
+  background: white;
+  border-radius: 5px;
+
+  &.focused_searchbar {
+    outline: 1px #2823fb;
+  }
+  .input_field {
+    width: 100%;
+    font-size: 16px;
+    padding: 0 10px;
+    border: 0;
+    background: transparent;
   }
 }

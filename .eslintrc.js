@@ -16,9 +16,11 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "react-hooks",
+    "jsx-a11y",
   ],
   rules: {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "jsx-a11y/rule-name": 2,
   },
 };
