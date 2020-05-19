@@ -75,6 +75,7 @@ const Select: React.FC<SelectProps> = () => {
   const [activeUser, setActiveUser] = useState(0);
 
   useEffect(() => {
+    // This will obviously not be run in production as the data is only available locally.
     async function fetchData() {
       const res = await fetch("http://localhost:3001/users");
       res
