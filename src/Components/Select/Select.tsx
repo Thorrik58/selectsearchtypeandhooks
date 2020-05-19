@@ -68,7 +68,6 @@ const Select: React.FC<SelectProps> = () => {
   const [users, setUsers] = useState<UserProps[]>();
   const [searchValue, setSearchValue] = useState("");
   const [activeUser, setActiveUser] = useState(0);
-  const [focuseSearchbar, setFocusSearchBar] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -82,6 +81,7 @@ const Select: React.FC<SelectProps> = () => {
   }, []);
 
   let filteredAndSortedArr: UserProps[] = [];
+  // make the user array sent in through props, fetch in app.tsx
   if (typeof users !== "undefined") {
     filteredAndSortedArr = filterList(users, searchValue);
   }
@@ -89,40 +89,46 @@ const Select: React.FC<SelectProps> = () => {
   return (
     <div className={styles.select_container}>
       <form autoComplete={"off"}>
-        <div
-          className={cx(
-            styles.input_container,
-            focuseSearchbar ? styles.focused_searchbar : null
-          )}
-        >
-          <ReactLogo />
+        <div className={cx(styles.input_container)}>
+          <ReactLogo className={styles.icon} />
           <input
             type="text"
             name="search"
             className={styles.input_field}
-            aria-labelledby="search"
             placeholder="Þekktir viðtakendur"
-            onFocus={() => {
-              setFocusSearchBar(true);
-            }}
-            onBlur={() => {
-              setFocusSearchBar(false);
-            }}
             value={searchValue}
+            onKeyDown={(e) => {
+              if (e.keyCode === 40) {
+                setActiveUser(
+                  activeUser === filteredAndSortedArr.length
+                    ? activeUser
+                    : activeUser + 1
+                );
+                console.log("down");
+              }
+              if (e.keyCode === 38) {
+                console.log("up");
+                setActiveUser(activeUser === 0 ? activeUser : activeUser - 1);
+              }
+              console.log(e.keyCode);
+            }}
             onChange={(e) => {
               setSearchValue(e.target.value);
               setActiveUser(0);
             }}
           />
-          <label htmlFor="search">Search for name:</label>
+          <label className={styles.aux} htmlFor="search">
+            Search for name:
+          </label>
         </div>
       </form>
       {typeof users !== "undefined" && searchValue.length > 0 && (
         <ul className={styles.user_list} tabIndex={-1}>
-          {true ? ( //filteredArr.length > 0
+          {filteredAndSortedArr.length > 0 ? (
             filteredAndSortedArr.map((user, key) => (
               <li
                 key={key}
+                tabIndex={0}
                 value={user.name}
                 onMouseOver={() => {
                   setActiveUser(key);
