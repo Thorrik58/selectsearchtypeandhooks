@@ -18,15 +18,17 @@ const numberOfMatches = (user: UserProps, searchTerm: string): Number => {
 };
 
 const filterList = (userList: UserProps[], searchTerm: string): UserProps[] => {
+  var cleanString = searchTerm.replace(/[|&;$%@"<>\\()+,]/g, "");
+  console.log(cleanString);
   const newArr = userList.filter(
-    (user) => numberOfMatches(user, searchTerm) > 0
+    (user) => numberOfMatches(user, cleanString) > 0
   );
   // Sort array so the most relevant user appears on top
   const sortedNewArr = newArr.sort((a, b) => {
-    if (numberOfMatches(a, searchTerm) > numberOfMatches(b, searchTerm)) {
+    if (numberOfMatches(a, cleanString) > numberOfMatches(b, cleanString)) {
       return -1;
     }
-    if (numberOfMatches(b, searchTerm) > numberOfMatches(a, searchTerm)) {
+    if (numberOfMatches(b, cleanString) > numberOfMatches(a, cleanString)) {
       return 1;
     }
     return 0;
@@ -39,14 +41,15 @@ const createHighLightedText = (
   searchTerm: string,
   subText: boolean
 ): JSX.Element => {
-  const parts = text.split(new RegExp(`(${searchTerm})`, "gi"));
+  var cleanString = searchTerm.replace(/[|&;$%@"<>\\()+,]/g, "");
+  const parts = text.split(new RegExp(`(${cleanString})`, "gi"));
   return (
     <p className={subText ? styles.sub_text : styles.text}>
       {parts.map((part, i) => (
         <span
           key={i}
           className={cx(
-            part.toLowerCase() === searchTerm.toLowerCase()
+            part.toLowerCase() === cleanString.toLowerCase()
               ? styles.highlighted_text
               : null
           )}
