@@ -42,29 +42,36 @@ const filterList = (userList: UserProps[], searchTerm: string): UserProps[] => {
   return sortedNewArr;
 };
 
-const getHighlightedText = (text: string, searchTerm: string): JSX.Element => {
+const createHighLightedText = (
+  text: string,
+  searchTerm: string,
+  subText: boolean
+): JSX.Element => {
   const parts = text.split(new RegExp(`(${searchTerm})`, "gi"));
   return (
-    <span>
+    <p className={subText ? styles.sub_text : styles.text}>
       {" "}
       {parts.map((part, i) => (
         <span
           key={i}
-          style={
+          className={cx(
             part.toLowerCase() === searchTerm.toLowerCase()
-              ? { fontWeight: 500 }
-              : {}
-          }
+              ? styles.highlighted_text
+              : null
+          )}
         >
           {part}
         </span>
       ))}{" "}
-    </span>
+    </p>
   );
 };
 
 const Select: React.FC<SelectProps> = () => {
   const [hasError, setErrors] = useState(false);
+  if (hasError) {
+    console.warn(`Error fetching user data ${hasError}`);
+  }
   const [users, setUsers] = useState<UserProps[]>();
   const [searchValue, setSearchValue] = useState("");
   const [activeUser, setActiveUser] = useState(0);
@@ -80,6 +87,19 @@ const Select: React.FC<SelectProps> = () => {
     fetchData();
   }, []);
 
+  const handleOnKeyDown = (keyCode: number) => {
+    if (keyCode === 40) {
+      setActiveUser(
+        activeUser === filteredAndSortedArr.length - 1
+          ? activeUser
+          : activeUser + 1
+      );
+    }
+    if (keyCode === 38) {
+      setActiveUser(activeUser === 0 ? activeUser : activeUser - 1);
+    }
+  };
+
   let filteredAndSortedArr: UserProps[] = [];
   // make the user array sent in through props, fetch in app.tsx
   if (typeof users !== "undefined") {
@@ -94,23 +114,14 @@ const Select: React.FC<SelectProps> = () => {
           <input
             type="text"
             name="search"
-            className={styles.input_field}
+            className={cx(
+              styles.input_field,
+              searchValue.length === 0 ? styles.placeholder_text : null
+            )}
             placeholder="Þekktir viðtakendur"
             value={searchValue}
             onKeyDown={(e) => {
-              if (e.keyCode === 40) {
-                setActiveUser(
-                  activeUser === filteredAndSortedArr.length
-                    ? activeUser
-                    : activeUser + 1
-                );
-                console.log("down");
-              }
-              if (e.keyCode === 38) {
-                console.log("up");
-                setActiveUser(activeUser === 0 ? activeUser : activeUser - 1);
-              }
-              console.log(e.keyCode);
+              handleOnKeyDown(e.keyCode);
             }}
             onChange={(e) => {
               setSearchValue(e.target.value);
@@ -133,17 +144,20 @@ const Select: React.FC<SelectProps> = () => {
                 onMouseOver={() => {
                   setActiveUser(key);
                 }}
+                onFocus={() => {
+                  setActiveUser(key);
+                }}
                 className={cx(
                   styles.user_element,
                   key === activeUser ? styles.active_user : null
                 )}
               >
-                {getHighlightedText(user.name, searchValue)}
-                {getHighlightedText(user.email, searchValue)}
+                {createHighLightedText(user.name, searchValue, false)}
+                {createHighLightedText(user.email, searchValue, true)}
               </li>
             ))
           ) : (
-            <li>Engar niðurstöður</li>
+            <li className={styles.no_results}>Engar niðurstöður</li>
           )}
         </ul>
       )}

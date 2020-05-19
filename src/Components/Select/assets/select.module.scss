@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-self: flex-start;
+  width: 356px;
 }
 
 .hidden_label {
@@ -9,21 +10,43 @@
 }
 
 .user_list {
-  width: 314px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   list-style: none;
   background: #ffffff;
+  font-weight: 200;
   color: black;
-  padding: 20px;
+  padding: 10px;
   justify-content: space-between;
   font-size: 16px;
   border-radius: 5px;
+  box-sizing: border-box;
   box-shadow: 0px 0px 10px 0px rgba(40, 35, 251, 0.1);
   .user_element {
     &.active_user {
       background: #f3f7ff;
+      border-radius: 5px;
     }
+  }
+  .text {
+    padding: 0 10px;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  .sub_text {
+    padding: 0 10px;
+    margin-top: 0;
+    font-size: 14px;
+    color: #98a4c5;
+  }
+  .highlighted_text {
+    font-weight: 700;
+  }
+  .no_results {
+    font-style: italic;
+    padding: 20px 0;
+    color: #98a4c5;
   }
 }
 
@@ -49,14 +72,19 @@
   .input_field {
     border-radius: 3px;
     padding: 5px 5px 5px 40px;
+    color: #474747;
     font-size: 16px;
     border: 0;
     background: transparent;
     display: flex;
-    width: 314px;
-    min-height: 36px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 56px;
     align-items: center;
     background: #f3f7ff;
     border-radius: 5px;
+  }
+  .placeholder_text {
+    color: #98a4c5;
   }
 }
