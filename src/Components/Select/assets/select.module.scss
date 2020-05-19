@@ -8,6 +8,17 @@
 }
 
 .user_list {
+  width: 314px;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  background: #ffffff;
+  color: black;
+  padding: 20px;
+  justify-content: space-between;
+  font-size: 16px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgba(40, 35, 251, 0.1);
   .user_element {
     &.active_user {
       background: red;
@@ -15,13 +26,13 @@
   }
 }
 
-.searchbar {
+.input_container {
   display: flex;
   min-width: 294px;
   min-height: 36px;
   padding: 10px;
   align-items: center;
-  background: white;
+  background: #f3f7ff;
   border-radius: 5px;
 
   &.focused_searchbar {

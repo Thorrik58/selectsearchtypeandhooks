@@ -81,9 +81,9 @@ const Select: React.FC<SelectProps> = () => {
     fetchData();
   }, []);
 
-  let filteredArr: UserProps[] = [];
+  let filteredAndSortedArr: UserProps[] = [];
   if (typeof users !== "undefined") {
-    filteredArr = filterList(users, searchValue);
+    filteredAndSortedArr = filterList(users, searchValue);
   }
 
   return (
@@ -91,7 +91,7 @@ const Select: React.FC<SelectProps> = () => {
       <form autoComplete={"off"}>
         <div
           className={cx(
-            styles.searchbar,
+            styles.input_container,
             focuseSearchbar ? styles.focused_searchbar : null
           )}
         >
@@ -100,7 +100,7 @@ const Select: React.FC<SelectProps> = () => {
             type="text"
             name="search"
             className={styles.input_field}
-            aria-labelledby="searchbutton"
+            aria-labelledby="search"
             placeholder="Þekktir viðtakendur"
             onFocus={() => {
               setFocusSearchBar(true);
@@ -114,12 +114,13 @@ const Select: React.FC<SelectProps> = () => {
               setActiveUser(0);
             }}
           />
+          <label htmlFor="search">Search for name:</label>
         </div>
       </form>
       {typeof users !== "undefined" && searchValue.length > 0 && (
         <ul className={styles.user_list} tabIndex={-1}>
           {true ? ( //filteredArr.length > 0
-            filteredArr.map((user, key) => (
+            filteredAndSortedArr.map((user, key) => (
               <li
                 key={key}
                 value={user.name}
