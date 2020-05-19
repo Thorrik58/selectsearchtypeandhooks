@@ -19,7 +19,6 @@ const numberOfMatches = (user: UserProps, searchTerm: string): Number => {
 
 const filterList = (userList: UserProps[], searchTerm: string): UserProps[] => {
   var cleanString = searchTerm.replace(/[|&;$%@"<>\\()+,]/g, "");
-  console.log(cleanString);
   const newArr = userList.filter(
     (user) => numberOfMatches(user, cleanString) > 0
   );
