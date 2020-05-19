@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import styles from "./assets/select.module.scss";
 import cx from "classnames";
-import { ReactComponent as ReactLogo } from "./assets/Search.svg";
-
-interface SelectProps {
-  /** userlist */
-  users?: object;
-}
+import { ReactComponent as SearchIcon } from "./assets/Search.svg";
 
 interface UserProps {
   name: string;
@@ -22,10 +17,7 @@ const numberOfMatches = (user: UserProps, searchTerm: string): Number => {
   );
 };
 
-// could i reuse the regexp to remove and match at the same time? Maybe that risks readability?
 const filterList = (userList: UserProps[], searchTerm: string): UserProps[] => {
-  console.log(userList);
-  console.log(searchTerm);
   const newArr = userList.filter(
     (user) => numberOfMatches(user, searchTerm) > 0
   );
@@ -65,7 +57,7 @@ const createHighLightedText = (
   );
 };
 
-const Select: React.FC<SelectProps> = () => {
+const Select: FC = () => {
   const [hasError, setErrors] = useState(false);
   if (hasError) {
     console.warn(`Error fetching user data ${hasError}`);
@@ -75,15 +67,19 @@ const Select: React.FC<SelectProps> = () => {
   const [activeUser, setActiveUser] = useState(0);
 
   useEffect(() => {
-    // This will obviously not be run in production as the data is only available locally.
-    async function fetchData() {
-      const res = await fetch("http://localhost:3001/users");
-      res
-        .json()
-        .then((res) => setUsers(res))
-        .catch((err) => setErrors(err));
-    }
-    fetchData();
+    let isCurrent = true;
+    fetch("http://localhost:3001/users")
+      .then((response) => response.json())
+      .then((data) => {
+        if (isCurrent) {
+          setUsers(data);
+        }
+      })
+      .catch((err) => {
+        if (isCurrent) {
+          setErrors(err);
+        }
+      });
   }, []);
 
   const handleOnKeyDown = (keyCode: number) => {
@@ -109,7 +105,7 @@ const Select: React.FC<SelectProps> = () => {
     <div className={styles.select_container}>
       <form autoComplete={"off"}>
         <div className={cx(styles.input_container)}>
-          <ReactLogo className={styles.icon} />
+          <SearchIcon className={styles.icon} />
           <input
             type="text"
             name="search"
