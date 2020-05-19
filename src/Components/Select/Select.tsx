@@ -12,9 +12,13 @@ interface UserProps {
   ssn: string;
 }
 
+// could i reuse the regexp to remove and match at the same time? Maybe that risks readability?
 const filterList = (userList: UserProps[], searchTerm: string): UserProps[] => {
+  console.log(userList);
+  console.log(searchTerm);
+  const regex = new RegExp(`(${searchTerm})`, "gi");
   const newArr = userList.filter(
-    (user) => user.name.includes(searchTerm) || user.email.includes(searchTerm)
+    (user) => user.name.match(regex) || user.email.match(regex)
   );
   return newArr;
 };
@@ -43,6 +47,7 @@ const getHighlightedText = (text: string, highlight: string): JSX.Element => {
 const Select: React.FC<SelectProps> = () => {
   const [hasError, setErrors] = useState(false);
   const [users, setUsers] = useState<UserProps[]>();
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -57,21 +62,35 @@ const Select: React.FC<SelectProps> = () => {
 
   let filteredArr: UserProps[] = [];
   if (typeof users !== "undefined") {
-    filteredArr = filterList(users, "e");
+    filteredArr = filterList(users, searchValue);
   }
 
   return (
     <div className={styles.select_container}>
-      <ul>
-        {typeof filteredArr !== "undefined"
-          ? filteredArr.map((user, key) => (
+      <form>
+        <label>
+          Name:
+          <input
+            type="text"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+        </label>
+      </form>
+      {typeof users !== "undefined" && searchValue.length > 0 && (
+        <ul>
+          {filteredArr.length > 0 ? (
+            filteredArr.map((user, key) => (
               <li key={key} value={user.name}>
-                {getHighlightedText(user.name, "e")}
-                {getHighlightedText(user.email, "e")}
+                {getHighlightedText(user.name, searchValue)}
+                {getHighlightedText(user.email, searchValue)}
               </li>
             ))
-          : null}
-      </ul>
+          ) : (
+            <li>Engar niðurstöður</li>
+          )}
+        </ul>
+      )}
     </div>
   );
 };
