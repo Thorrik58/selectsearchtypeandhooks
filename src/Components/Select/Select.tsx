@@ -50,7 +50,6 @@ const createHighLightedText = (
   const parts = text.split(new RegExp(`(${searchTerm})`, "gi"));
   return (
     <p className={subText ? styles.sub_text : styles.text}>
-      {" "}
       {parts.map((part, i) => (
         <span
           key={i}
@@ -62,7 +61,7 @@ const createHighLightedText = (
         >
           {part}
         </span>
-      ))}{" "}
+      ))}
     </p>
   );
 };
