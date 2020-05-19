@@ -12,6 +12,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
+### `yarn mock`
+
+Runs `json-server --watch db.json` which is a fake REST API for the data used in the select functionality.
+
+You are going to have to install json-server `yarn global add json-server` in order to run the mock api.
+
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br />
