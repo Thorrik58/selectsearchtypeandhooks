@@ -119,7 +119,10 @@ const Select: React.FC<SelectProps> = () => {
             placeholder="Þekktir viðtakendur"
             value={searchValue}
             onKeyDown={(e) => {
-              handleOnKeyDown(e.keyCode);
+              if (e.keyCode === 40 || e.keyCode === 38) {
+                handleOnKeyDown(e.keyCode);
+                e.preventDefault();
+              }
             }}
             onChange={(e) => {
               setSearchValue(e.target.value);
